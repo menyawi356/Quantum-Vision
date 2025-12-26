@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUANTUM VISION - Team 10226</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #0066cc;
+            --secondary-blue: #0099ff;
+            --accent-cyan: #00ccff;
+            --accent-green: #00ff88;
+            --accent-red: #ff6666;
+            --accent-orange: #ffaa00;
+            --dark-bg: #0a0a2a;
+            --darker-bg: #05051a;
+            --card-bg: rgba(10, 20, 40, 0.8);
+            --text-light: #e0f0ff;
+            --text-gray: #a0b0c0;
+            --gradient-blue: linear-gradient(135deg, #0066cc 0%, #0099ff 50%, #00ccff 100%);
+            --gradient-dark: linear-gradient(135deg, #05051a 0%, #0a0a2a 50%, #0f1a2a 100%);
+        }
+
+        body {
+            background: var(--gradient-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(5, 5, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--accent-cyan);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            background: linear-gradient(to right, var(--accent-cyan), white);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            color: var(--text-light);
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 204, 255, 0.1);
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.2);
+        }
+
+        .nav-btn.active {
+            background: rgba(0, 204, 255, 0.2);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        /* Main Content */
+        main {
+            padding: 40px 0;
+            min-height: calc(100vh - 160px);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: var(--accent-cyan);
+            text-align: center;
+            background: linear-gradient(to right, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: var(--gradient-blue);
+            border-radius: 2px;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--accent-cyan);
+        }
+
+        /* Home Page */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(rgba(5, 5, 26, 0.9), rgba(5, 5, 26, 0.9)), url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 102, 204, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(0, 204, 255, 0.2) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .team-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 102, 204, 0.2);
+            border: 1px solid var(--primary-blue);
+            padding: 10px 20px;
+            border-radius: 30px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .team-badge span {
+            font-weight: bold;
+            color: var(--accent-cyan);
+        }
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 15px 35px rgba(0, 204, 255, 0.2);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-blue);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .feature-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Charts and Data Visualization */
+        .chart-container {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 25px rgba(0, 204, 255, 0.15);
+        }
+
+        .chart-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 20, 40, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: rgba(0, 102, 204, 0.3);
+            padding: 15px;
+            text-align: left;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 204, 255, 0.1);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        .highlight {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .highlight-red {
+            background: rgba(255, 102, 102, 0.1);
+            color: var(--accent-red);
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* Challenges Page */
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .challenge-card {
+            background: var(--card-bg);
+            border-left: 5px solid;
+            border-radius: 10px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .challenge-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .challenge-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Materials Grid */
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .material-card {
+            background: rgba(0, 30, 60, 0.5);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .material-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 20px rgba(0, 204, 255, 0.2);
+        }
+
+        .material-icon {
+            font-size: 40px;
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+        }
+
+        /* Scientific Principles Cards */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .principle-card {
+            background: rgba(0, 20, 40, 0.6);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-radius: 10px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-5px);
+        }
+
+        .principle-formula {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: var(--accent-green);
+            font-size: 18px;
+            text-align: center;
+            border-left: 3px solid var(--accent-green);
+        }
+
+        /* Impact Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: var(--gradient-blue);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 102, 204, 0.4);
+        }
+
+        .metric-value {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* AI Chat Interface */
+        .ai-interface {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-header {
+            background: var(--gradient-blue);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .ai-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .ai-tabs {
+            display: flex;
+            background: rgba(0, 20, 40, 0.8);
+            border-bottom: 1px solid rgba(0, 204, 255, 0.3);
+        }
+
+        .ai-tab {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .ai-tab.active {
+            background: rgba(0, 204, 255, 0.2);
+            border-bottom: 3px solid var(--accent-cyan);
+        }
+
+        .ai-content {
+            padding: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 15px;
+            line-height: 1.5;
+        }
+
+        .message.user {
+            background: rgba(0, 102, 204, 0.2);
+            align-self: flex-end;
+            border: 1px solid rgba(0, 102, 204, 0.5);
+        }
+
+        .message.assistant {
+            background: rgba(0, 204, 255, 0.1);
+            align-self: flex-start;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 15px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .chat-input button {
+            background: var(--gradient-blue);
+            border: none;
+            color: white;
+            padding: 0 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(5, 5, 26, 0.95);
+            border-top: 1px solid rgba(0, 204, 255, 0.3);
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--accent-cyan);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-gray);
+            font-size: 14px;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .nav-links {
+                gap: 3px;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(5, 5, 26, 0.98);
+                padding: 20px;
+                flex-direction: column;
+                border-top: 1px solid rgba(0, 204, 255, 0.3);
+                z-index: 1000;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            }
+            
+            .nav-links.mobile-open {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-title {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .feature-cards,
+            .challenge-grid,
+            .materials-grid,
+            .principles-grid,
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .metric-value {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .feature-card, 
+            .challenge-card,
+            .chart-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <div class="logo" onclick="switchPage('home')">
+                <div class="logo-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>QUANTUM VISION</h1>
+                    <p>TEAM 10226</p>
+                </div>
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <button class="nav-btn active" onclick="switchPage('home')">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="nav-btn" onclick="switchPage('challenges')">
+                    <i class="fas fa-exclamation-triangle"></i> Challenges
+                </button>
+                <button class="nav-btn" onclick="switchPage('problem')">
+                    <i class="fas fa-question-circle"></i> Problem
+                </button>
+                <button class="nav-btn" onclick="switchPage('solution')">
+                    <i class="fas fa-lightbulb"></i> Solution
+                </button>
+                <button class="nav-btn" onclick="switchPage('design')">
+                    <i class="fas fa-microchip"></i> Design
+                </button>
+                <button class="nav-btn" onclick="switchPage('materials')">
+                    <i class="fas fa-recycle"></i> Materials
+                </button>
+                <button class="nav-btn" onclick="switchPage('results')">
+                    <i class="fas fa-chart-line"></i> Results
+                </button>
+                <button class="nav-btn" onclick="switchPage('science')">
+                    <i class="fas fa-flask"></i> Science
+                </button>
+                <button class="nav-btn" onclick="switchPage('impact')">
+                    <i class="fas fa-graduation-cap"></i> Impact
+                </button>
+                <button class="nav-btn" onclick="switchPage('ai')">
+                    <i class="fas fa-robot"></i> QCHEM AXIS
+                </button>
+            </div>
+            
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- Home Page -->
+        <div class="page active" id="home">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>QUANTUM VISION</h1>
+                    <p>An innovative multifunctional scientific device designed to revolutionize science education in Egypt by combining spectrophotometry, temperature sensing, and AI-powered learning in one sustainable, low-cost solution.</p>
+                    <div class="team-badge">
+                        <i class="fas fa-users"></i>
+                        <span>TEAM 10226:</span> Asser Hatem, Mohamed Hatem, Mohamed Hossam, Omar Khaled
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="page-title">Project Overview</h2>
+            
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Multifunctional Design</h3>
+                    <p>Combines spectrophotometry and temperature measurement in one device, usable across chemistry, physics, and earth science laboratories. Accuracy: <span class="highlight">97.1% overall</span> (within 5% design requirement).</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <h3>Sustainable Construction</h3>
+                    <p>Built primarily from recycled electronic components and materials, reducing environmental impact and promoting circular economy principles. <span class="highlight">100% recycled components</span> used.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Educational Impact</h3>
+                    <p>Addresses the critical shortage of laboratory equipment in Egyptian public schools, enabling hands-on science education for <span class="highlight">900+ students</span> at Eledwa High School alone.</p>
+                </div>
+            </div>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-trophy"></i> Key Achievements</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">97.1%</div>
+                        <div class="metric-label">Overall Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">2-in-1</div>
+                        <div class="metric-label">Functions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">Recycled Materials</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">900+</div>
+                        <div class="metric-label">Students Impacted</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Challenges Page -->
+        <div class="page" id="challenges">
+            <h2 class="page-title">Egypt's Grand Challenges</h2>
+            
+            <div class="challenge-grid">
+                <div class="challenge-card" style="border-left-color: #ff6666;">
+                    <h3><i class="fas fa-flask" style="color: #ff6666;"></i> Weak Scientific Infrastructure</h3>
+                    <p>Egypt spends only <span class="highlight-red">0.7% of GDP</span> on scientific research (2023), compared to the global average of <span class="highlight">2.63%</span>. South Korea spends 4.9% of its GDP on R&D.</p>
+                </div>
+                
+                <div class="challenge-card" style="border-left-color: #ffaa00;">
+                    <h3><i class="fas fa-industry" style="color: #ffaa00;"></i> Industrial Decline</h3>
+                    <p>Egypt's industrial base ranking dropped from <span class="highlight">30th</span> to <span class="highlight-red">60th</span> globally between 2020-2022 due to insufficient investment in scientific research and development.</p>
+                </div>
+                
+                <div class="challenge-card" style="border-left-color: #00ccff;">
+                    <h3><i class="fas fa-tint" style="color: #00ccff;"></i> Water Pollution</h3>
+                    <p><span class="highlight-red">4.5 million tons</span> of untreated industrial pollutants enter Egyptian waters annually, contaminating vital water resources and ecosystems.</p>
+                </div>
+                
+                <div class="challenge-card" style="border-left-color: #00ff88;">
+                    <h3><i class="fas fa-graduation-cap" style="color: #00ff88;"></i> Educational Crisis</h3>
+                    <p>At Eledwa High School for Boys and Girls in Minya, <span class="highlight-red">90% of students (900 out of 1000)</span> cannot understand science lessons due to lack of laboratory equipment.</p>
+                </div>
+            </div>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-chart-bar"></i> R&D Spending Comparison</h3>
+                <div class="chart-container">
+                    <canvas id="rdSpendingChart"></canvas>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Problem Page -->
+        <div class="page" id="problem">
+            <h2 class="page-title">The Core Problem</h2>
+            
+            <div class="problem-statement">
+                <h3 style="color: #ff6666; margin-bottom: 20px; font-size: 24px;">
+                    <i class="fas fa-exclamation-circle"></i> Scientific Education Crisis in Egyptian Public Schools
+                </h3>
+                <p style="font-size: 18px; line-height: 1.8;">
+                    The lack of modern scientific equipment in Egyptian public schools, particularly in rural areas like Minya, creates an <span class="highlight-red">educational inequality gap</span> where students cannot conduct basic laboratory experiments. This theoretical-only approach to science education hinders conceptual understanding, reduces student engagement, and limits future career opportunities in STEM fields.
+                </p>
+            </div>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-school"></i> Case Study: Eledwa High School</h3>
+                <div class="challenge-card" style="border-left-color: #00ccff;">
+                    <h3><i class="fas fa-chalkboard-teacher"></i> The Reality in Minya</h3>
+                    <ul style="color: var(--text-gray); padding-left: 20px; margin-top: 15px;">
+                        <li style="margin-bottom: 10px;"><span class="highlight-red">900 out of 1000 students</span> struggle with science concepts</li>
+                        <li style="margin-bottom: 10px;">Last laboratory equipment upgrade: <span class="highlight-red">2016</span></li>
+                        <li style="margin-bottom: 10px;">Only <span class="highlight-red">1 computer</span> in the entire school (in principal's office)</li>
+                        <li style="margin-bottom: 10px;">No functioning spectrophotometers or temperature sensing devices</li>
+                        <li>Chemistry and physics taught <span class="highlight-red">entirely theoretically</span> without hands-on experiments</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-balance-scale"></i> Existing Solutions & Their Limitations</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h3 style="color: #ffaa00;">Vernier Temperature-Sensing Device</h3>
+                        <p><span class="highlight">High accuracy</span> (±0.2-0.5°C) but <span class="highlight-red">extremely expensive</span> (10,000 E.P.) and single-function only.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 style="color: #00ccff;">SPECORD PLUS Series</h3>
+                        <p>Versatile spectrophotometer but <span class="highlight-red">lacks precision</span> for temperature measurements and is <span class="highlight-red">cost-prohibitive</span> for public schools.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 style="color: #00ff88;">Quantum Vision Solution</h3>
+                        <p><span class="highlight">97.1% accuracy</span>, <span class="highlight">2-in-1 functionality</span>, <span class="highlight">100% recycled materials</span>, <span class="highlight">affordable</span>, and designed specifically for educational use.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Solution Page -->
+        <div class="page" id="solution">
+            <h2 class="page-title">Our Solution: Quantum Vision</h2>
+            
+            <div class="solution-hero">
+                <h2 style="color: var(--accent-cyan); margin-bottom: 20px; font-size: 32px;">
+                    <i class="fas fa-lightbulb"></i> Innovative Spectrophotometer & Temperature Sensor
+                </h2>
+                <p style="font-size: 20px; color: var(--text-gray); max-width: 800px; margin: 0 auto;">
+                    Quantum Vision is a multifunctional scientific device that performs <span class="highlight">concentration measurement</span> via spectrophotometry and <span class="highlight">temperature sensing</span> in one affordable, sustainable package.
+                </p>
+            </div>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-cogs"></i> How It Works</h3>
+                <div class="principles-grid">
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-cyan); margin-bottom: 15px;">
+                            <i class="fas fa-vial"></i> Concentration Measurement
+                        </h4>
+                        <p>Uses the <span class="highlight">Beer-Lambert Law</span> to determine solution concentration by measuring light absorption through a sample.</p>
+                        <div class="principle-formula">A = εlc</div>
+                        <p>Where A = absorbance, ε = molar absorptivity, l = path length, c = concentration.</p>
+                    </div>
+                    
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-green); margin-bottom: 15px;">
+                            <i class="fas fa-thermometer-half"></i> Temperature Sensing
+                        </h4>
+                        <p>Utilizes an <span class="highlight">AMT18 temperature sensor</span> with <span class="highlight">99.9% accuracy</span> to measure solution temperature based on thermal equilibrium principles.</p>
+                        <div class="principle-formula">q = -k(dT/dx)</div>
+                        <p>Fourier's Law of Heat Conduction governs the heat transfer from solution to sensor.</p>
+                    </div>
+                    
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-orange); margin-bottom: 15px;">
+                            <i class="fas fa-brain"></i> AI Integration
+                        </h4>
+                        <p>Includes an AI assistant (<span class="highlight">QCHEM AXIS</span>) to help students understand chemical concepts, troubleshoot experiments, and analyze results.</p>
+                        <p>Trained on chemistry curriculum and experimental data to provide contextual, educational support.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Design Page -->
+        <div class="page" id="design">
+            <h2 class="page-title">Device Design & Architecture</h2>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-project-diagram"></i> System Architecture</h3>
+                <div class="challenge-card" style="border-left-color: var(--accent-cyan);">
+                    <h3><i class="fas fa-microchip"></i> Electronic Components</h3>
+                    <ul style="color: var(--text-gray); padding-left: 20px; margin-top: 15px;">
+                        <li style="margin-bottom: 10px;"><span class="highlight">ATmega328p Microcontroller</span> - Brain of the device, processes sensor data</li>
+                        <li style="margin-bottom: 10px;"><span class="highlight">RGB LED (WS2812B)</span> - Light source for spectrophotometry</li>
+                        <li style="margin-bottom: 10px;"><span class="highlight">LDR Photoresistor</span> - Detects transmitted light intensity</li>
+                        <li style="margin-bottom: 10px;"><span class="highlight">AMT18 Temperature Sensor</span> - Measures solution temperature</li>
+                        <li style="margin-bottom: 10px;"><span class="highlight">LCD Display</span> - Shows results and measurements</li>
+                        <li><span class="highlight">PCB & Power Supply</span> - Circuit board and power management</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-ruler-combined"></i> Physical Design</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h3 style="color: var(--accent-cyan);">Light-Tight Enclosure</h3>
+                        <p>Wooden box (30×30×40 cm) prevents external light interference, ensuring accurate spectrophotometric measurements. All seams sealed to eliminate light leaks.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 style="color: var(--accent-green);">Sample Holder Design</h3>
+                        <p>Custom cuvette holder with wax stabilization ensures consistent optical path length (0.5 cm) for reliable Beer-Lambert Law calculations.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 style="color: var(--accent-orange);">Sensor Placement</h3>
+                        <p>Optimal positioning of LDR and temperature sensor relative to light source and sample ensures maximum measurement accuracy and repeatability.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Materials Page -->
+        <div class="page" id="materials">
+            <h2 class="page-title">Sustainable Materials & Components</h2>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-recycle"></i> 100% Recycled Components</h3>
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-print"></i></div>
+                        <h4>ATmega328p</h4>
+                        <p>Microcontroller from old printer</p>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-couch"></i></div>
+                        <h4>Wooden Box</h4>
+                        <p>From old furniture workshop</p>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-mouse"></i></div>
+                        <h4>RGB LED</h4>
+                        <p>From old computer mouse</p>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-calculator"></i></div>
+                        <h4>LCD Display</h4>
+                        <p>From scientific calculator</p>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-satellite-dish"></i></div>
+                        <h4>LDR Sensor</h4>
+                        <p>From old computer mouse</p>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-microchip"></i></div>
+                        <h4>PCB Board</h4>
+                        <p>From old computer</p>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-thermometer"></i></div>
+                        <h4>AMT18 Sensor</h4>
+                        <p>From old thermometer</p>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-icon"><i class="fas fa-plug"></i></div>
+                        <h4>Adapter</h4>
+                        <p>From old TV</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-bolt"></i> Electrical Specifications</h3>
+                <div class="chart-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Resistance</th>
+                                <th>Voltage Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Power Supply (Adapter)</td>
+                                <td>0.06 Ω</td>
+                                <td>9V Input</td>
+                            </tr>
+                            <tr>
+                                <td>LDR Module</td>
+                                <td>1800-4500 Ω</td>
+                                <td>5V</td>
+                            </tr>
+                            <tr>
+                                <td>LCD Screen</td>
+                                <td>145 Ω</td>
+                                <td>5V</td>
+                            </tr>
+                            <tr>
+                                <td>Temperature Sensor</td>
+                                <td>8020 Ω</td>
+                                <td>5V</td>
+                            </tr>
+                            <tr>
+                                <td>LED 4×4</td>
+                                <td>0.960 Ω</td>
+                                <td>5V</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Equivalent Resistance</strong></td>
+                                <td><strong>0.93 Ω</strong></td>
+                                <td><strong>5V Usage</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="principle-card" style="margin-top: 20px;">
+                    <h4 style="color: var(--accent-green);">Circuit Efficiency Calculation</h4>
+                    <p>Using Ohm's Law and power calculations:</p>
+                    <div class="principle-formula">I = V/R = 5/0.87 = 5.7A</div>
+                    <div class="principle-formula">P<sub>in</sub> = 9 × 5.7 = 51.3W | P<sub>out</sub> = 5 × 5.7 = 28.5W</div>
+                    <div class="principle-formula" style="color: var(--accent-cyan);">Efficiency = P<sub>out</sub>/P<sub>in</sub> = 28.5/51.3 ≈ 55.6%</div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Results Page -->
+        <div class="page" id="results">
+            <h2 class="page-title">Experimental Results & Accuracy</h2>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-vial"></i> Concentration Measurement Accuracy</h3>
+                <div class="chart-container">
+                    <h4 class="chart-title"><i class="fas fa-table"></i> Potassium Permanganate Calibration Results</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Trial</th>
+                                <th>Measured Absorbance (A)</th>
+                                <th>True Concentration (M)</th>
+                                <th>Calculated Concentration (M)</th>
+                                <th>% Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>0.452</td>
+                                <td>0.000400</td>
+                                <td>0.000412</td>
+                                <td class="highlight">2.90%</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>0.602</td>
+                                <td>0.000547</td>
+                                <td>0.000563</td>
+                                <td class="highlight">2.90%</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>0.770</td>
+                                <td>0.000700</td>
+                                <td>0.000721</td>
+                                <td class="highlight">2.90%</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>0.990</td>
+                                <td>0.000900</td>
+                                <td>0.000926</td>
+                                <td class="highlight">2.90%</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="text-align: center; background: rgba(0, 255, 136, 0.1); color: var(--accent-green); font-weight: bold;">
+                                    Average Error: 2.90% | Accuracy: 97.10%
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="chart-container">
+                    <h4 class="chart-title"><i class="fas fa-chart-line"></i> Absorbance vs Concentration Calibration Curve</h4>
+                    <canvas id="absorbanceChart"></canvas>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-thermometer-half"></i> Temperature Measurement Accuracy</h3>
+                <div class="chart-container">
+                    <h4 class="chart-title"><i class="fas fa-table"></i> Temperature Sensor Calibration Results</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Trial</th>
+                                <th>Measured Temp (°C)</th>
+                                <th>True Temp (°C)</th>
+                                <th>% Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>24.00</td>
+                                <td>24.05</td>
+                                <td class="highlight">0.20%</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>25.00</td>
+                                <td>25.05</td>
+                                <td class="highlight">0.20%</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>23.90</td>
+                                <td>23.95</td>
+                                <td class="highlight">0.20%</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>24.50</td>
+                                <td>24.55</td>
+                                <td class="highlight">0.20%</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" style="text-align: center; background: rgba(0, 255, 136, 0.1); color: var(--accent-green); font-weight: bold;">
+                                    Average Error: 0.20% | Accuracy: 99.80%
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="chart-container">
+                    <h4 class="chart-title"><i class="fas fa-chart-line"></i> Temperature Sensor Response Time</h4>
+                    <canvas id="tempResponseChart"></canvas>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-tachometer-alt"></i> Overall Performance</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">97.1%</div>
+                        <div class="metric-label">Concentration Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">99.8%</div>
+                        <div class="metric-label">Temperature Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">97.1%</div>
+                        <div class="metric-label">Overall Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">✓</div>
+                        <div class="metric-label">Design Requirement Met (≤5% error)</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h4 class="chart-title"><i class="fas fa-chart-bar"></i> Accuracy vs Design Requirement</h4>
+                    <canvas id="accuracyChart"></canvas>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Science Page -->
+        <div class="page" id="science">
+            <h2 class="page-title">Scientific Principles & Theory</h2>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-atom"></i> Beer-Lambert Law Fundamentals</h3>
+                <div class="principle-card">
+                    <h4 style="color: var(--accent-cyan);">Theoretical Basis</h4>
+                    <p>The Beer-Lambert Law describes the linear relationship between absorbance and concentration of an absorbing species:</p>
+                    <div class="principle-formula">A = εlc</div>
+                    <p>Where:</p>
+                    <ul style="color: var(--text-gray); padding-left: 20px; margin: 15px 0;">
+                        <li>A = Absorbance (unitless)</li>
+                        <li>ε = Molar absorptivity (L·mol⁻¹·cm⁻¹)</li>
+                        <li>l = Path length through sample (cm)</li>
+                        <li>c = Concentration (mol·L⁻¹)</li>
+                    </ul>
+                    <p>For potassium permanganate at 525 nm: ε = 2200 L·mol⁻¹·cm⁻¹, l = 0.5 cm</p>
+                </div>
+                
+                <div class="chart-container">
+                    <h4 class="chart-title"><i class="fas fa-chart-line"></i> Beer-Lambert Law Verification</h4>
+                    <canvas id="beerLambertChart"></canvas>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-fire"></i> Thermodynamics & Heat Transfer</h3>
+                <div class="principles-grid">
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-red);">Zeroth Law of Thermodynamics</h4>
+                        <p>Heat transfers between solution and sensor until thermal equilibrium is reached:</p>
+                        <div class="principle-formula">T<sub>sensor</sub> = T<sub>solution</sub></div>
+                        <p>When sensor (26°C) is placed in solution (34°C): ΔT = 8°C</p>
+                    </div>
+                    
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-orange);">Fourier's Law of Heat Conduction</h4>
+                        <p>Describes heat flow from higher to lower temperature:</p>
+                        <div class="principle-formula">q = -k(dT/dx)</div>
+                        <p>Where q = heat flux, k = thermal conductivity, dT/dx = temperature gradient.</p>
+                    </div>
+                    
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-green);">Newton's Law of Cooling</h4>
+                        <p>Describes rate of temperature change:</p>
+                        <div class="principle-formula">dT/dt = -k(T - T<sub>a</sub>)</div>
+                        <p>For our system: dT/dt = -0.2(26 - 34) = 1.6°C/s</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-bolt"></i> Electromagnetic Radiation & Photonics</h3>
+                <div class="principle-card">
+                    <h4 style="color: var(--accent-cyan);">Photon Energy Equation</h4>
+                    <div class="principle-formula">E = hν = hc/λ</div>
+                    <p>Where:</p>
+                    <ul style="color: var(--text-gray); padding-left: 20px; margin: 15px 0;">
+                        <li>E = Energy of photon (J)</li>
+                        <li>h = Planck's constant = 6.626×10⁻³⁴ J·s</li>
+                        <li>ν = Frequency (Hz)</li>
+                        <li>c = Speed of light = 3×10¹⁰ cm/s</li>
+                        <li>λ = Wavelength (cm)</li>
+                    </ul>
+                    <p>Each substance has a unique absorption spectrum - a "fingerprint" that identifies it.</p>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Impact Page -->
+        <div class="page" id="impact">
+            <h2 class="page-title">Educational & Environmental Impact</h2>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-graduation-cap"></i> Educational Transformation</h3>
+                <div class="challenge-card" style="border-left-color: var(--accent-green);">
+                    <h3><i class="fas fa-school"></i> Eledwa High School Impact</h3>
+                    <ul style="color: var(--text-gray); padding-left: 20px; margin-top: 15px;">
+                        <li style="margin-bottom: 10px;"><span class="highlight">900 students</span> will gain access to practical science education</li>
+                        <li style="margin-bottom: 10px;">Both <span class="highlight">Chemistry and Physics labs</span> will be equipped</li>
+                        <li style="margin-bottom: 10px;">Students can perform <span class="highlight">TDS (Total Dissolved Solids) measurements</span></li>
+                        <li style="margin-bottom: 10px;">Study of <span class="highlight">thermal properties of reactions</span></li>
+                        <li><span class="highlight">Fair opportunity</span> compared to STEM school students</li>
+                    </ul>
+                </div>
+                
+                <div class="metrics-grid" style="margin-top: 30px;">
+                    <div class="metric-card">
+                        <div class="metric-value">900</div>
+                        <div class="metric-label">Students Impacted</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">2</div>
+                        <div class="metric-label">Laboratories Equipped</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">1000+</div>
+                        <div class="metric-label">Experiments Enabled</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">∞</div>
+                        <div class="metric-label">Learning Opportunities</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-leaf"></i> Environmental Sustainability</h3>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h3 style="color: var(--accent-green);"><i class="fas fa-recycle"></i> Circular Economy Model</h3>
+                        <p>Quantum Vision demonstrates how electronic waste can be repurposed into valuable educational tools, reducing landfill waste and promoting sustainable consumption patterns.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 style="color: var(--accent-cyan);"><i class="fas fa-bolt"></i> Energy Efficiency</h3>
+                        <p>With 55.6% circuit efficiency and low power consumption (28.5W output), the device minimizes energy usage while maintaining high performance.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h3 style="color: var(--accent-orange);"><i class="fas fa-seedling"></i> Educational Multiplier Effect</h3>
+                        <p>By training students in sustainable practices and circular economy principles, Quantum Vision creates environmental advocates who will propagate these values throughout their communities.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h3 class="section-title"><i class="fas fa-expand-arrows-alt"></i> Scalability & Future Expansion</h3>
+                <div class="principles-grid">
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-cyan);">Quartz Cuvette Upgrade</h4>
+                        <p>Recommended upgrade from plastic (91% transmission) to quartz (99% transmission) cuvettes expands wavelength range from 450-750nm to 190-2500nm, enabling analysis of more solutions.</p>
+                        <p><span class="highlight-red">Challenge:</span> Cost is 200× higher (2000 E.P. vs 10 E.P.)</p>
+                    </div>
+                    
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-green);">Dell PowerEdge R750 Server</h4>
+                        <p>Recommended for scaling AI assistant to serve 70+ schools simultaneously with stable, high-performance access to educational resources and data storage.</p>
+                        <p><span class="highlight-red">Challenge:</span> High initial cost (500,000 E.P.)</p>
+                    </div>
+                    
+                    <div class="principle-card">
+                        <h4 style="color: var(--accent-orange);">Computer Access Solution</h4>
+                        <p>Critical recommendation: Provide computer access in schools to enable data saving and full AI functionality. Currently only 1 computer exists (in principal's office).</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- AI Page -->
+        <div class="page" id="ai">
+            <h2 class="page-title">QCHEM AXIS AI Assistant</h2>
+            
+            <div class="ai-interface">
+                <div class="ai-header">
+                    <h2><i class="fas fa-robot"></i> QCHEM AXIS</h2>
+                    <p>AI-powered Chemistry & Physics Learning Assistant</p>
+                </div>
+                
+                <div class="ai-tabs">
+                    <button class="ai-tab active" onclick="switchAiTab('chat')">
+                        <i class="fas fa-comments"></i> Chat Assistant
+                    </button>
+                    <button class="ai-tab" onclick="switchAiTab('experiments')">
+                        <i class="fas fa-flask"></i> Experiment Guide
+                    </button>
+                    <button class="ai-tab" onclick="switchAiTab('concepts')">
+                        <i class="fas fa-book"></i> Concept Explorer
+                    </button>
+                </div>
+                
+                <div class="ai-content">
+                    <div id="chat-tab" class="ai-tab-content">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message assistant">
+                                <strong>QCHEM AXIS:</strong> Hello! I'm your AI chemistry and physics assistant. I can help you understand concepts, troubleshoot experiments with Quantum Vision, and explain scientific principles. How can I assist you today?
+                            </div>
+                            <div class="message user">
+                                <strong>Student:</strong> Can you explain how the Beer-Lambert Law works in Quantum Vision?
+                            </div>
+                            <div class="message assistant">
+                                <strong>QCHEM AXIS:</strong> Absolutely! The Beer-Lambert Law (A = εlc) is fundamental to Quantum Vision's concentration measurements. Light passes through your sample, and the device measures how much is absorbed. The absorbance (A) is directly proportional to concentration (c). With ε = 2200 L·mol⁻¹·cm⁻¹ for potassium permanganate and l = 0.5 cm path length, we can calculate concentrations with 97.1% accuracy!
+                            </div>
+                            <div class="message user">
+                                <strong>Student:</strong> Why is the temperature sensor so accurate?
+                            </div>
+                            <div class="message assistant">
+                                <strong>QCHEM AXIS:</strong> Great question! The AMT18 sensor achieves 99.8% accuracy through thermal equilibrium (Zeroth Law of Thermodynamics) and precise heat transfer principles. It reaches equilibrium with your solution, then applies Fourier's Law of Heat Conduction and Newton's Law of Cooling to ensure measurements are both rapid and precise.
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <input type="text" id="chatInput" placeholder="Ask about chemistry, physics, or Quantum Vision..." onkeypress="handleChatKeypress(event)">
+                            <button onclick="sendChatMessage()">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="experiments-tab" class="ai-tab-content" style="display: none;">
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px;">Quantum Vision Experiment Guides</h3>
+                        <div class="simulations-grid">
+                            <div class="simulation-card" onclick="openExperiment('beer-lambert')">
+                                <h3>Beer-Lambert Law Verification</h3>
+                                <p>Step-by-step guide to verifying the Beer-Lambert Law using potassium permanganate solutions of known concentrations.</p>
+                                <p style="color: var(--accent-green); margin-top: 10px;">
+                                    <i class="fas fa-vial"></i> Chemistry | <i class="fas fa-chart-line"></i> Spectroscopy
+                                </p>
+                            </div>
+                            
+                            <div class="simulation-card" onclick="openExperiment('temperature-calibration')">
+                                <h3>Temperature Sensor Calibration</h3>
+                                <p>Learn how to calibrate and verify the accuracy of the AMT18 temperature sensor using water baths at known temperatures.</p>
+                                <p style="color: var(--accent-green); margin-top: 10px;">
+                                    <i class="fas fa-thermometer-half"></i> Physics | <i class="fas fa-tachometer-alt"></i> Calibration
+                                </p>
+                            </div>
+                            
+                            <div class="simulation-card" onclick="openExperiment('concentration-unknown')">
+                                <h3>Unknown Concentration Determination</h3>
+                                <p>Use Quantum Vision to determine the concentration of an unknown solution using the calibration curve method.</p>
+                                <p style="color: var(--accent-green); margin-top: 10px;">
+                                    <i class="fas fa-question-circle"></i> Analysis | <i class="fas fa-calculator"></i> Calculation
+                                </p>
+                            </div>
+                            
+                            <div class="simulation-card" onclick="openExperiment('reaction-kinetics')">
+                                <h3>Reaction Kinetics Study</h3>
+                                <p>Monitor reaction rates by measuring concentration changes over time using Quantum Vision's spectrophotometric function.</p>
+                                <p style="color: var(--accent-green); margin-top: 10px;">
+                                    <i class="fas fa-clock"></i> Kinetics | <i class="fas fa-chart-line"></i> Time Study
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="concepts-tab" class="ai-tab-content" style="display: none;">
+                        <h3 style="color: var(--accent-cyan); margin-bottom: 20px;">Scientific Concept Explorer</h3>
+                        <div class="principles-grid">
+                            <div class="principle-card">
+                                <h4 style="color: var(--accent-cyan);">Spectrophotometry</h4>
+                                <p>The measurement of light absorption by chemical substances. Learn how different compounds absorb specific wavelengths of light.</p>
+                                <button class="nav-btn" style="margin-top: 15px; width: 100%;" onclick="explainConcept('spectrophotometry')">
+                                    <i class="fas fa-play-circle"></i> Learn More
+                                </button>
+                            </div>
+                            
+                            <div class="principle-card">
+                                <h4 style="color: var(--accent-green);">Beer-Lambert Law</h4>
+                                <p>The linear relationship between absorbance and concentration of an absorbing species. Fundamental to quantitative analysis.</p>
+                                <button class="nav-btn" style="margin-top: 15px; width: 100%;" onclick="explainConcept('beer-lambert')">
+                                    <i class="fas fa-play-circle"></i> Learn More
+                                </button>
+                            </div>
+                            
+                            <div class="principle-card">
+                                <h4 style="color: var(--accent-orange);">Thermodynamics</h4>
+                                <p>The study of heat, temperature, and their relation to energy and work. Essential for understanding temperature measurements.</p>
+                                <button class="nav-btn" style="margin-top: 15px; width: 100%;" onclick="explainConcept('thermodynamics')">
+                                    <i class="fas fa-play-circle"></i> Learn More
+                                </button>
+                            </div>
+                            
+                            <div class="principle-card">
+                                <h4 style="color: var(--accent-red);">Electromagnetic Spectrum</h4>
+                                <p>The range of all types of electromagnetic radiation. Different wavelengths interact differently with matter.</p>
+                                <button class="nav-btn" style="margin-top: 15px; width: 100%;" onclick="explainConcept('electromagnetic')">
+                                    <i class="fas fa-play-circle"></i> Learn More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <section style="margin-top: 40px;">
+                <h3 class="section-title"><i class="fas fa-chart-network"></i> AI Learning Outcomes Integration</h3>
+                <div class="chart-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Learning Outcome Code</th>
+                                <th>Description & Usage in Quantum Vision</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ENW 2.1.2</td>
+                                <td>Process analysis essay writing used in experimental analysis and reporting</td>
+                            </tr>
+                            <tr>
+                                <td>CH 2.03</td>
+                                <td>Acids and bases phenomena used in determining pH scale of solutions</td>
+                            </tr>
+                            <tr>
+                                <td>CH 2.01</td>
+                                <td>Concentration using molarity for determining solution concentrations</td>
+                            </tr>
+                            <tr>
+                                <td>PH 2.03</td>
+                                <td>Ohm's Law for determining current flow in the circuit</td>
+                            </tr>
+                            <tr>
+                                <td>PH 2.04</td>
+                                <td>Series and parallel resistance connections for calculating total circuit resistance</td>
+                            </tr>
+                            <tr>
+                                <td>ME 2.01</td>
+                                <td>Friction principles applied in designing the cuvette container</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>QUANTUM VISION</h3>
+                    <p>Team 10226 - Asser Hatem, Mohamed Hatem, Mohamed Hossam, Omar Khaled</p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" onclick="switchPage('home')">Home</a>
+                    <a href="#" onclick="switchPage('challenges')">Challenges</a>
+                    <a href="#" onclick="switchPage('solution')">Solution</a>
+                    <a href="#" onclick="switchPage('results')">Results</a>
+                    <a href="#" onclick="switchPage('impact')">Impact</a>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Quantum Vision - Team 10226. All data based on experimental results from the A4 Poster documentation.</p>
+                <p style="margin-top: 10px; font-size: 12px;">Data Sources: Our World in Data, UNESCO Institute for Statistics, World Bank | Scientific References: Beer-Lambert Law publications, Thermodynamics texts</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        function switchPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update active nav button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Find and activate the corresponding nav button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.textContent.includes(pageId.charAt(0).toUpperCase() + pageId.slice(1)) || 
+                    (pageId === 'home' && btn.textContent.includes('Home')) ||
+                    (pageId === 'science' && btn.textContent.includes('Science'))) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('mobile-open');
+            
+            // Initialize charts on the results page
+            if (pageId === 'results' || pageId === 'challenges' || pageId === 'science') {
+                setTimeout(initializeCharts, 100);
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('mobile-open');
+        }
+
+        // AI Tab Switching
+        function switchAiTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.ai-tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabId + '-tab').style.display = 'block';
+            
+            // Update active tab button
+            document.querySelectorAll('.ai-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+        }
+
+        // AI Chat Functions
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                // Add user message
+                const chatMessages = document.getElementById('chatMessages');
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user';
+                userMessage.innerHTML = `<strong>Student:</strong> ${message}`;
+                chatMessages.appendChild(userMessage);
+                
+                // Clear input
+                input.value = '';
+                
+                // Simulate AI response after delay
+                setTimeout(() => {
+                    const aiResponse = document.createElement('div');
+                    aiResponse.className = 'message assistant';
+                    
+                    // Simple response logic based on keywords
+                    let response = "I understand you're asking about Quantum Vision. This device combines spectrophotometry and temperature sensing with 97.1% overall accuracy. ";
+                    
+                    if (message.toLowerCase().includes('beer') || message.toLowerCase().includes('lambert')) {
+                        response = "The Beer-Lambert Law (A = εlc) is fundamental to our concentration measurements. With ε = 2200 L·mol⁻¹·cm⁻¹ for potassium permanganate and l = 0.5 cm path length, we achieve 97.1% accuracy in concentration determination.";
+                    } else if (message.toLowerCase().includes('temperature') || message.toLowerCase().includes('heat')) {
+                        response = "Our AMT18 temperature sensor achieves 99.8% accuracy through thermal equilibrium principles. It applies Fourier's Law of Heat Conduction and reaches equilibrium with your solution for precise measurements.";
+                    } else if (message.toLowerCase().includes('accuracy') || message.toLowerCase().includes('error')) {
+                        response = "Quantum Vision exceeds design requirements with 97.1% overall accuracy (2.9% error). Concentration measurements show 2.9% error, while temperature measurements show only 0.2% error.";
+                    } else if (message.toLowerCase().includes('school') || message.toLowerCase().includes('student')) {
+                        response = "At Eledwa High School, 900 out of 1000 students will benefit from Quantum Vision. The device will be used in both Chemistry and Physics labs, enabling practical experiments that were previously impossible.";
+                    } else if (message.toLowerCase().includes('recycl') || message.toLowerCase().includes('material')) {
+                        response = "Quantum Vision is built from 100% recycled materials: microcontroller from old printer, LED from computer mouse, LCD from calculator, temperature sensor from thermometer, and wooden box from old furniture.";
+                    }
+                    
+                    aiResponse.innerHTML = `<strong>QCHEM AXIS:</strong> ${response}`;
+                    chatMessages.appendChild(aiResponse);
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        // Experiment Guide Functions
+        function openExperiment(experimentId) {
+            const experimentTitles = {
+                'beer-lambert': 'Beer-Lambert Law Verification',
+                'temperature-calibration': 'Temperature Sensor Calibration',
+                'concentration-unknown': 'Unknown Concentration Determination',
+                'reaction-kinetics': 'Reaction Kinetics Study'
+            };
+            
+            alert(`Opening experiment guide: ${experimentTitles[experimentId]}\n\nThis would launch an interactive simulation in a full implementation.`);
+        }
+
+        // Concept Explorer Functions
+        function explainConcept(conceptId) {
+            const conceptExplanations = {
+                'spectrophotometry': 'Spectrophotometry measures how much light a chemical substance absorbs. Each compound absorbs specific wavelengths, creating a unique "fingerprint" spectrum. Quantum Vision uses this principle to determine concentrations.',
+                'beer-lambert': 'The Beer-Lambert Law states that absorbance (A) is directly proportional to concentration (c): A = εlc, where ε is molar absorptivity and l is path length. This linear relationship enables quantitative analysis.',
+                'thermodynamics': 'Thermodynamics studies heat, temperature, and energy transfer. Quantum Vision applies the Zeroth Law (thermal equilibrium), Fourier\'s Law (heat conduction), and Newton\'s Law of Cooling for accurate temperature measurements.',
+                'electromagnetic': 'The electromagnetic spectrum ranges from gamma rays to radio waves. Visible light (400-700nm) interacts with electrons in molecules, causing absorption at specific wavelengths that Quantum Vision measures.'
+            };
+            
+            alert(`Concept Explanation: ${conceptExplanations[conceptId]}`);
+        }
+
+        // Chart Initialization
+        function initializeCharts() {
+            // R&D Spending Comparison Chart
+            const rdCtx = document.getElementById('rdSpendingChart');
+            if (rdCtx) {
+                new Chart(rdCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['South Korea', 'Global Average', 'Egypt'],
+                        datasets: [{
+                            label: '% of GDP spent on R&D (2023)',
+                            data: [4.9, 2.63, 0.7],
+                            backgroundColor: [
+                                'rgba(0, 255, 136, 0.7)',
+                                'rgba(0, 204, 255, 0.7)',
+                                'rgba(255, 102, 102, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgb(0, 255, 136)',
+                                'rgb(0, 204, 255)',
+                                'rgb(255, 102, 102)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#e0f0ff'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: '% of GDP',
+                                    color: '#a0b0c0'
+                                },
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Absorbance vs Concentration Chart
+            const absorbanceCtx = document.getElementById('absorbanceChart');
+            if (absorbanceCtx) {
+                new Chart(absorbanceCtx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Experimental Data',
+                            data: [
+                                {x: 0.000400, y: 0.452},
+                                {x: 0.000547, y: 0.602},
+                                {x: 0.000700, y: 0.770},
+                                {x: 0.000900, y: 0.990}
+                            ],
+                            backgroundColor: 'rgba(0, 204, 255, 0.7)',
+                            borderColor: 'rgb(0, 204, 255)',
+                            borderWidth: 2,
+                            pointRadius: 8,
+                            pointHoverRadius: 10
+                        },
+                        {
+                            label: 'Linear Fit (Beer-Lambert Law)',
+                            data: [
+                                {x: 0.000400, y: 0.440},
+                                {x: 0.000900, y: 0.990}
+                            ],
+                            type: 'line',
+                            backgroundColor: 'rgba(0, 255, 136, 0.3)',
+                            borderColor: 'rgb(0, 255, 136)',
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#e0f0ff'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += `Absorbance = ${context.parsed.y.toFixed(3)}, `;
+                                            label += `Conc = ${(context.parsed.x * 10000).toFixed(2)}×10⁻⁴ M`;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Concentration (mol/L)',
+                                    color: '#a0b0c0'
+                                },
+                                ticks: {
+                                    color: '#a0b0c0',
+                                    callback: function(value) {
+                                        return value.toExponential(2);
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Absorbance (A)',
+                                    color: '#a0b0c0'
+                                },
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Temperature Response Chart
+            const tempCtx = document.getElementById('tempResponseChart');
+            if (tempCtx) {
+                new Chart(tempCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['0s', '1s', '3s', '5s', '8s', '12s', '15s'],
+                        datasets: [{
+                            label: 'Temperature (°C)',
+                            data: [26, 28, 30, 32, 33.2, 33.8, 34.0],
+                            backgroundColor: 'rgba(255, 102, 102, 0.2)',
+                            borderColor: 'rgb(255, 102, 102)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#e0f0ff'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Temperature (°C)',
+                                    color: '#a0b0c0'
+                                },
+                                min: 24,
+                                max: 35,
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 102, 102, 0.1)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time (seconds)',
+                                    color: '#a0b0c0'
+                                },
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 102, 102, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Accuracy Comparison Chart
+            const accuracyCtx = document.getElementById('accuracyChart');
+            if (accuracyCtx) {
+                new Chart(accuracyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Concentration', 'Temperature', 'Overall'],
+                        datasets: [
+                            {
+                                label: 'Quantum Vision Accuracy',
+                                data: [97.1, 99.8, 97.1],
+                                backgroundColor: 'rgba(0, 204, 255, 0.7)',
+                                borderColor: 'rgb(0, 204, 255)',
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'Design Requirement (Minimum)',
+                                data: [95, 95, 95],
+                                backgroundColor: 'rgba(255, 102, 102, 0.5)',
+                                borderColor: 'rgb(255, 102, 102)',
+                                borderWidth: 2,
+                                borderDash: [5, 5]
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#e0f0ff'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 90,
+                                max: 100,
+                                title: {
+                                    display: true,
+                                    text: 'Accuracy (%)',
+                                    color: '#a0b0c0'
+                                },
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Beer-Lambert Law Chart
+            const beerCtx = document.getElementById('beerLambertChart');
+            if (beerCtx) {
+                new Chart(beerCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['0.0001', '0.0002', '0.0003', '0.0004', '0.0005', '0.0006', '0.0007', '0.0008', '0.0009', '0.0010'],
+                        datasets: [{
+                            label: 'Theoretical (Beer-Lambert Law)',
+                            data: [0.11, 0.22, 0.33, 0.44, 0.55, 0.66, 0.77, 0.88, 0.99, 1.10],
+                            borderColor: 'rgb(0, 255, 136)',
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            fill: false,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Experimental (Quantum Vision)',
+                            data: [0.115, 0.225, 0.338, 0.452, 0.560, 0.672, 0.770, 0.885, 0.990, 1.105],
+                            backgroundColor: 'rgba(0, 204, 255, 0.2)',
+                            borderColor: 'rgb(0, 204, 255)',
+                            borderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#e0f0ff'
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Absorbance (A)',
+                                    color: '#a0b0c0'
+                                },
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Concentration (mol/L)',
+                                    color: '#a0b0c0'
+                                },
+                                ticks: {
+                                    color: '#a0b0c0'
+                                },
+                                grid: {
+                                    color: 'rgba(0, 204, 255, 0.1)'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize charts for the home page
+            initializeCharts();
+            
+            // Set up logo click to go home
+            document.querySelector('.logo').addEventListener('click', function() {
+                switchPage('home');
+            });
+            
+            // Set up all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active state
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
